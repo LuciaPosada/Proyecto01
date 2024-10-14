@@ -23,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +42,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SimonDiceTheme {
+                simonDice()
             }
         }
     }
@@ -53,13 +55,19 @@ fun ronda() {
 @Composable
 fun simonDice() {
     var secuenciaJugador = remember { mutableStateListOf<Int>() }
-    val record = Record(0)
+    val record = remember { mutableStateOf(Record()) }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .wrapContentSize(Alignment.Center)
     ) {
-        Text(text = secuenciaJugador.lastOrNull()?.toString() ?: " ")
+
+        Text(
+            text = "Record: ${record.value.numRondas}",
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.CenterHorizontally)
+        )
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -69,7 +77,7 @@ fun simonDice() {
                 onClick = {
                     secuenciaJugador.add(Colors.ROJO.num)
                     Log.d("BotonClick",Colors.ROJO.nom)
-                    record},
+                    record.value.numRondas +=1},
                 colors = ButtonDefaults.buttonColors(Color.Red),
                 modifier = Modifier
                     .weight(1f)
@@ -79,7 +87,8 @@ fun simonDice() {
             Button(
                 onClick = {
                     secuenciaJugador.add(Colors.AZUL.num)
-                    Log.d("BotonClick",Colors.AZUL.nom)},
+                    Log.d("BotonClick",Colors.AZUL.nom)
+                    record.value.numRondas +=1},
                 colors = ButtonDefaults.buttonColors(Color.Blue),
                 modifier = Modifier
                     .weight(1f)
@@ -95,7 +104,8 @@ fun simonDice() {
             Button(
                 onClick = {
                     secuenciaJugador.add(Colors.VERDE.num)
-                    Log.d("BotonClick",Colors.VERDE.nom)},
+                    Log.d("BotonClick",Colors.VERDE.nom)
+                    record.value.numRondas +=1},
                 colors = ButtonDefaults.buttonColors(Color.Green),
                 modifier = Modifier
                     .weight(1f)
@@ -105,7 +115,8 @@ fun simonDice() {
             Button(
                 onClick = {
                     secuenciaJugador.add(Colors.AMARILLO.num)
-                    Log.d("BotonClick",Colors.AMARILLO.nom)},
+                    Log.d("BotonClick",Colors.AMARILLO.nom)
+                    record.value.numRondas +=1},
                 colors = ButtonDefaults.buttonColors(Color.Yellow),
                 modifier = Modifier
                     .weight(1f)
@@ -113,9 +124,13 @@ fun simonDice() {
                     .padding(5.dp)
             ) {}
         }
+
+        Text(
+            text = "Boton: ${secuenciaJugador.lastOrNull()?.toString() ?: " "}",
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.CenterHorizontally))
     }
-
-
 }
 
 @Preview(showBackground = true)

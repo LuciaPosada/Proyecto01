@@ -1,5 +1,4 @@
 package com.lucia.simondice.ui.theme
 
-data class Record(val numRondas: Int) {
-
+data class Record(var numRondas: Int = 0) {
 }
