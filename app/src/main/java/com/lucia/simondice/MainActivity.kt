@@ -46,10 +46,9 @@ class MainActivity : ComponentActivity() {
 }
 
 fun generarSecuencia(): List<Int> {
-    val random = Random() // Este rtandom me esta dando problemas
     val secuenciaRandomizada = mutableListOf<Int>()
     for (i in 0..5) {
-        secuenciaRandomizada.add(random.nextInt(4) + 1)
+        secuenciaRandomizada.add(Random.nextInt(4) + 1)
     }
     return secuenciaRandomizada
 }
