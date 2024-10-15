@@ -77,7 +77,7 @@ fun simonDice() {
                 onClick = {
                     secuenciaJugador.add(Colors.ROJO.num)
                     botonActual = Colors.ROJO.nom
-                    Log.d("BotonClick",Colors.ROJO.nom)
+                    Log.d("BotonColorClick",Colors.ROJO.nom)
                     record.value.numRondas +=1},
                 colors = ButtonDefaults.buttonColors(Color.Red),
                 modifier = Modifier
@@ -89,7 +89,7 @@ fun simonDice() {
                 onClick = {
                     secuenciaJugador.add(Colors.AZUL.num)
                     botonActual = Colors.AZUL.nom
-                    Log.d("BotonClick",Colors.AZUL.nom)
+                    Log.d("BotonColorClick",Colors.AZUL.nom)
                     record.value.numRondas +=1},
                 colors = ButtonDefaults.buttonColors(Color.Blue),
                 modifier = Modifier
@@ -107,7 +107,7 @@ fun simonDice() {
                 onClick = {
                     secuenciaJugador.add(Colors.VERDE.num)
                     botonActual = Colors.VERDE.nom
-                    Log.d("BotonClick",Colors.VERDE.nom)
+                    Log.d("BotonColorClick",Colors.VERDE.nom)
                     record.value.numRondas +=1},
                 colors = ButtonDefaults.buttonColors(Color.Green),
                 modifier = Modifier
@@ -119,7 +119,7 @@ fun simonDice() {
                 onClick = {
                     secuenciaJugador.add(Colors.AMARILLO.num)
                     botonActual = Colors.AMARILLO.nom
-                    Log.d("BotonClick",Colors.AMARILLO.nom)
+                    Log.d("BotonColorClick",Colors.AMARILLO.nom)
                     record.value.numRondas +=1},
                 colors = ButtonDefaults.buttonColors(Color.Yellow),
                 modifier = Modifier
