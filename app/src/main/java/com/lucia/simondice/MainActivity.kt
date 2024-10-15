@@ -138,6 +138,7 @@ fun simonDice() {
         TextButton(
             onClick = {
                 val secuencia = generarSecuencia()
+                Log.d("BotonCrearClick",secuencia.toString())
                 val toast = Toast.makeText(contexto, secuencia.toString(),Toast.LENGTH_LONG)
                 toast.show()
             },
