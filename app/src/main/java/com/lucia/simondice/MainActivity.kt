@@ -2,29 +2,22 @@ package com.lucia.simondice
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import kotlin.random.Random
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,18 +36,28 @@ class MainActivity : ComponentActivity() {
         setContent {
             SimonDiceTheme {
                 simonDice()
+
+                // para mas tarde
+                val toast = Toast.makeText(this,"texto",Toast.LENGTH_SHORT)
+                toast.show()
             }
         }
     }
 }
 
-fun ronda() {
-
+fun generarSecuencia(): List<Int> {
+    val random = Random() // Este rtandom me esta dando problemas
+    val secuenciaRandomizada = mutableListOf<Int>()
+    for (i in 0..5) {
+        secuenciaRandomizada.add(random.nextInt(4) + 1)
+    }
+    return secuenciaRandomizada
 }
 
 @Composable
 fun simonDice() {
     var secuenciaJugador = remember { mutableStateListOf<Int>() }
+    var botonActual by remember { mutableStateOf("") }
     val record = remember { mutableStateOf(Record()) }
     Column(
         modifier = Modifier
@@ -76,6 +79,7 @@ fun simonDice() {
             Button(
                 onClick = {
                     secuenciaJugador.add(Colors.ROJO.num)
+                    botonActual = Colors.ROJO.nom
                     Log.d("BotonClick",Colors.ROJO.nom)
                     record.value.numRondas +=1},
                 colors = ButtonDefaults.buttonColors(Color.Red),
@@ -87,6 +91,7 @@ fun simonDice() {
             Button(
                 onClick = {
                     secuenciaJugador.add(Colors.AZUL.num)
+                    botonActual = Colors.AZUL.nom
                     Log.d("BotonClick",Colors.AZUL.nom)
                     record.value.numRondas +=1},
                 colors = ButtonDefaults.buttonColors(Color.Blue),
@@ -104,6 +109,7 @@ fun simonDice() {
             Button(
                 onClick = {
                     secuenciaJugador.add(Colors.VERDE.num)
+                    botonActual = Colors.VERDE.nom
                     Log.d("BotonClick",Colors.VERDE.nom)
                     record.value.numRondas +=1},
                 colors = ButtonDefaults.buttonColors(Color.Green),
@@ -115,6 +121,7 @@ fun simonDice() {
             Button(
                 onClick = {
                     secuenciaJugador.add(Colors.AMARILLO.num)
+                    botonActual = Colors.AMARILLO.nom
                     Log.d("BotonClick",Colors.AMARILLO.nom)
                     record.value.numRondas +=1},
                 colors = ButtonDefaults.buttonColors(Color.Yellow),
@@ -126,7 +133,7 @@ fun simonDice() {
         }
 
         Text(
-            text = "Boton: ${secuenciaJugador.lastOrNull()?.toString() ?: " "}",
+            text = "Boton: ${secuenciaJugador.lastOrNull()?.toString() ?: " "} $botonActual",
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.CenterHorizontally))
