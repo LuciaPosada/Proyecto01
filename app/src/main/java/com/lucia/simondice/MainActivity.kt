@@ -21,6 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lucia.simondice.ui.theme.Record
@@ -36,10 +37,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             SimonDiceTheme {
                 simonDice()
-
-                // para mas tarde
-                val toast = Toast.makeText(this,"texto",Toast.LENGTH_SHORT)
-                toast.show()
             }
         }
     }
@@ -47,7 +44,7 @@ class MainActivity : ComponentActivity() {
 
 fun generarSecuencia(): List<Int> {
     val secuenciaRandomizada = mutableListOf<Int>()
-    for (i in 0..5) {
+    for (i in 0..4) {
         secuenciaRandomizada.add(Random.nextInt(4) + 1)
     }
     return secuenciaRandomizada
@@ -58,6 +55,7 @@ fun simonDice() {
     var secuenciaJugador = remember { mutableStateListOf<Int>() }
     var botonActual by remember { mutableStateOf("") }
     val record = remember { mutableStateOf(Record()) }
+    val contexto = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -136,6 +134,18 @@ fun simonDice() {
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.CenterHorizontally))
+
+        TextButton(
+            onClick = {
+                val secuencia = generarSecuencia()
+                val toast = Toast.makeText(contexto, secuencia.toString(),Toast.LENGTH_LONG)
+                toast.show()
+            },
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.CenterHorizontally)) {
+            Text(text = "Comenzar")
+        }
     }
 }
 
