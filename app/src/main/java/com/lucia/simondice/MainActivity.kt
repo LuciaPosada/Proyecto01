@@ -48,10 +48,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-fun ronda() {
-
-}
-
 @Composable
 fun simonDice() {
     var secuenciaJugador = remember { mutableStateListOf<Int>() }
