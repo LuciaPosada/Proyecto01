@@ -1,5 +1,6 @@
 package com.lucia.simondice
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -8,12 +9,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -27,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import com.lucia.simondice.ui.theme.Record
 import com.lucia.simondice.ui.theme.SimonDiceTheme
 
+// ToDo: Comenta con docs
+// ToDo: Separar codigo en clases
 class MainActivity : ComponentActivity() {
 
     private val secuencia = mutableListOf<Int>()
@@ -42,6 +41,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * Gernera de manera randomizada una secuencia de 5 numeros correspondientes con colores de Colors (1-4)
+ * @return Lista con la secuencia de numeros generados
+ */
 fun generarSecuencia(): List<Int> {
     val secuenciaRandomizada = mutableListOf<Int>()
     for (i in 0..4) {
@@ -50,12 +53,30 @@ fun generarSecuencia(): List<Int> {
     return secuenciaRandomizada
 }
 
+/**
+ * Crea un Toast y un Logcat apartir de la secuencia dada
+ * @param secuencia Secuencia que se va a mostrar
+ * @param contexto ?¿?
+ */
+fun mostrarToast(secuencia : List<Int>, contexto : Context) {
+    Log.d("BotonCrearClick",secuencia.toString())
+    val toast = Toast.makeText(contexto, secuencia.toString(),Toast.LENGTH_LONG)
+    toast.show()
+}
+
+fun compararSecuencias(secuenciaJugador: List<Int>, secuenciaJuego: MutableList<Int>) {
+// ToDo: metodo para comparar secuencias
+}
+
 @Composable
-fun simonDice() {
+fun simonDice() { // ToDo: Mover variables
+
     var secuenciaJugador = remember { mutableStateListOf<Int>() }
     var botonActual by remember { mutableStateOf("") }
     val record = remember { mutableStateOf(Record()) }
     val contexto = LocalContext.current
+    var secuenciaGenerada by remember { mutableStateOf(emptyList<Int>()) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -73,74 +94,49 @@ fun simonDice() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Button(
-                onClick = {
-                    secuenciaJugador.add(Colors.ROJO.num)
-                    botonActual = Colors.ROJO.nom
-                    Log.d("BotonColorClick",Colors.ROJO.nom)
-                    record.value.numRondas +=1},
-                colors = ButtonDefaults.buttonColors(Color.Red),
-                modifier = Modifier
-                    .weight(1f)
-                    .aspectRatio(3f)
-                    .padding(5.dp)
-            ) {}
-            Button(
-                onClick = {
-                    secuenciaJugador.add(Colors.AZUL.num)
-                    botonActual = Colors.AZUL.nom
-                    Log.d("BotonColorClick",Colors.AZUL.nom)
-                    record.value.numRondas +=1},
-                colors = ButtonDefaults.buttonColors(Color.Blue),
-                modifier = Modifier
-                    .weight(1f)
-                    .aspectRatio(3f)
-                    .padding(5.dp)
-            ) {}
+            crearBotonColor(
+                color = Colors.ROJO,
+                secuenciaJugador = secuenciaJugador,
+                record = record,
+                onClick = { color -> botonActual = color.nom }
+            )
+            crearBotonColor(
+                color = Colors.AZUL,
+                secuenciaJugador = secuenciaJugador,
+                record = record,
+                onClick = { color -> botonActual = color.nom }
+            )
         }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Button(
-                onClick = {
-                    secuenciaJugador.add(Colors.VERDE.num)
-                    botonActual = Colors.VERDE.nom
-                    Log.d("BotonColorClick",Colors.VERDE.nom)
-                    record.value.numRondas +=1},
-                colors = ButtonDefaults.buttonColors(Color.Green),
-                modifier = Modifier
-                    .weight(1f)
-                    .aspectRatio(3f)
-                    .padding(5.dp)
-            ) {}
-            Button(
-                onClick = {
-                    secuenciaJugador.add(Colors.AMARILLO.num)
-                    botonActual = Colors.AMARILLO.nom
-                    Log.d("BotonColorClick",Colors.AMARILLO.nom)
-                    record.value.numRondas +=1},
-                colors = ButtonDefaults.buttonColors(Color.Yellow),
-                modifier = Modifier
-                    .weight(1f)
-                    .aspectRatio(3f)
-                    .padding(5.dp)
-            ) {}
+            crearBotonColor(
+                color = Colors.VERDE,
+                secuenciaJugador = secuenciaJugador,
+                record = record,
+                onClick = { color -> botonActual = color.nom }
+            )
+            crearBotonColor(
+                color = Colors.AMARILLO,
+                secuenciaJugador = secuenciaJugador,
+                record = record,
+                onClick = { color -> botonActual = color.nom }
+            )
+
         }
 
         Text(
-            text = "Boton: ${secuenciaJugador.lastOrNull()?.toString() ?: " "} $botonActual",
+            text = "Boton: ${secuenciaJugador.lastOrNull()?.toString() ?: " "} - $botonActual",
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.CenterHorizontally))
 
         TextButton(
             onClick = {
-                val secuencia = generarSecuencia()
-                Log.d("BotonCrearClick",secuencia.toString())
-                val toast = Toast.makeText(contexto, secuencia.toString(),Toast.LENGTH_LONG)
-                toast.show()
+                secuenciaGenerada = generarSecuencia()
+                mostrarToast(secuenciaGenerada,contexto);
             },
             modifier = Modifier
                 .padding(16.dp)
@@ -148,6 +144,37 @@ fun simonDice() {
             Text(text = "Comenzar")
         }
     }
+}
+
+/**
+ * Crea un boton apartir de su color correspondiente
+ * @param color
+ * @param secuenciaJugador
+ * @param record
+ * @param
+ */
+@Composable
+fun crearBotonColor(color: Colors,secuenciaJugador: MutableList<Int>,record: MutableState<Record>,onClick: (Colors) -> Unit) {
+    Button(
+        onClick = {
+            secuenciaJugador.add(color.num)
+            onClick(color)
+            record.value.numRondas += 1
+            Log.d("BotonColorClick", color.nom)
+        },
+        colors = ButtonDefaults.buttonColors(
+            when (color) {
+                Colors.ROJO -> Color.Red
+                Colors.VERDE -> Color.Green
+                Colors.AMARILLO -> Color.Yellow
+                Colors.AZUL -> Color.Blue
+            }
+        ),
+        modifier = Modifier
+            .width(150.dp)
+            .height(150.dp)
+            .padding(5.dp)
+    ) {}
 }
 
 @Preview(showBackground = true)
