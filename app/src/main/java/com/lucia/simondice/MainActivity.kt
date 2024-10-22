@@ -42,8 +42,8 @@ class MainActivity : ComponentActivity() {
 }
 
 /**
- * Gernera de manera randomizada una secuencia de 5 numeros correspondientes con colores de Colors (1-4)
- * @return Lista con la secuencia de numeros generados
+ * Genera de manera randomizada una secuencia de 5 números correspondientes con colores de Colors (1-4)
+ * @return Lista con la secuencia de números generados
  */
 fun generarSecuencia(): List<Int> {
     val secuenciaRandomizada = mutableListOf<Int>()
@@ -54,19 +54,27 @@ fun generarSecuencia(): List<Int> {
 }
 
 /**
- * Crea un Toast y un Logcat apartir de la secuencia dada
+ * Crea un Toast y un Logcat a partir de la secuencia dada
  * @param secuencia Secuencia que se va a mostrar
- * @param contexto ?¿?
+ * @param contexto Contexto para mostrar el Toast
  */
-fun mostrarToast(secuencia : List<Int>, contexto : Context) {
-    Log.d("BotonCrearClick",secuencia.toString())
-    val toast = Toast.makeText(contexto, secuencia.toString(),Toast.LENGTH_LONG)
+fun mostrarToast(secuencia: List<Int>, contexto: Context) {
+    Log.d("BotonCrearClick", secuencia.toString())
+    val toast = Toast.makeText(contexto, secuencia.toString(), Toast.LENGTH_LONG)
     toast.show()
 }
 
-fun compararSecuencias(secuenciaJugador: List<Int>, secuenciaJuego: MutableList<Int>) {
-// ToDo: metodo para comparar secuencias
+/**
+ * Compara el último elemento de la secuencia del jugador con el correspondiente en la secuencia generada
+ * @param secuenciaJugador Secuencia de colores seleccionada por el jugador
+ * @param secuenciaGenerada Secuencia de colores generada aleatoriamente
+ * @return `true` si el último elemento coincide, `false` en caso contrario
+ */
+fun compararSecuencias(secuenciaJugador: List<Int>, secuenciaGenerada: List<Int>): Boolean {
+    val indice = secuenciaJugador.size - 1
+    return secuenciaJugador[indice] == secuenciaGenerada[indice]
 }
+
 
 @Composable
 fun simonDice() { // ToDo: Mover variables
@@ -97,12 +105,14 @@ fun simonDice() { // ToDo: Mover variables
             crearBotonColor(
                 color = Colors.ROJO,
                 secuenciaJugador = secuenciaJugador,
+                secuenciaJuego = secuenciaGenerada,
                 record = record,
                 onClick = { color -> botonActual = color.nom }
             )
             crearBotonColor(
                 color = Colors.AZUL,
                 secuenciaJugador = secuenciaJugador,
+                secuenciaJuego = secuenciaGenerada,
                 record = record,
                 onClick = { color -> botonActual = color.nom }
             )
@@ -115,12 +125,14 @@ fun simonDice() { // ToDo: Mover variables
             crearBotonColor(
                 color = Colors.VERDE,
                 secuenciaJugador = secuenciaJugador,
+                secuenciaJuego = secuenciaGenerada,
                 record = record,
                 onClick = { color -> botonActual = color.nom }
             )
             crearBotonColor(
                 color = Colors.AMARILLO,
                 secuenciaJugador = secuenciaJugador,
+                secuenciaJuego = secuenciaGenerada,
                 record = record,
                 onClick = { color -> botonActual = color.nom }
             )
@@ -154,13 +166,14 @@ fun simonDice() { // ToDo: Mover variables
  * @param
  */
 @Composable
-fun crearBotonColor(color: Colors,secuenciaJugador: MutableList<Int>,record: MutableState<Record>,onClick: (Colors) -> Unit) {
+fun crearBotonColor(color: Colors,secuenciaJugador: MutableList<Int>,secuenciaJuego: List<Int>,record: MutableState<Record>,onClick: (Colors) -> Unit) {
     Button(
         onClick = {
             secuenciaJugador.add(color.num)
             onClick(color)
             record.value.numRondas += 1
             Log.d("BotonColorClick", color.nom)
+            Log.d("Comprobacion",compararSecuencias(secuenciaJugador,secuenciaJuego).toString())
         },
         colors = ButtonDefaults.buttonColors(
             when (color) {
